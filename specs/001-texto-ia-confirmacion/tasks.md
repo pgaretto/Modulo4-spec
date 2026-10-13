@@ -99,13 +99,13 @@
 - [ ] T033 [P] [US2] Ampliar `backend.Tests/Unit/ProposalMappingTests.cs`: el gasto toma la fecha del evento de la misma frase, evento sin hora = todo el día, primer evento por orden de aparición con aviso `MULTIPLE_EVENTS`, fecha ambigua con `AMBIGUOUS_DATE` (FR-002, FR-003b, FR-005)
 - [ ] T034 [P] [US2] Ampliar `backend.Tests/Contract/EntriesContractTests.cs` con evento + gasto: `Title` string (1-120), `Date` válida, `Time` con formato `HH:mm` o nulo (FR-002, FR-009)
 - [ ] T035 [P] [US2] Test de integración: confirmar evento y gasto los guarda juntos con el `UserId` de Fede, Sofi no los ve, y si el gasto es inválido no se guarda ninguno, en `backend.Tests/Integration/EntriesEventIsolationTests.cs` (FR-007, FR-010, RNF-03)
-- [ ] T036 [P] [US2] Test del modal con evento y gasto: muestra título, fecha y hora opcional ("todo el día" sin hora) y los avisos junto al dato afectado, en `frontend/tests/ConfirmModal.event.test.tsx` (FR-002, FR-014)
+- [ ] T036 [P] [US2] Test del modal con evento y gasto: muestra título, fecha y hora opcional ("todo el día" sin hora) y cada aviso junto al dato afectado con su texto exacto de FR-014 ("Había más de un gasto; se propone el primero" o "Había más de un evento; se propone el primero", "No pude deducir la categoría; elegí una", "Fecha estimada; revisala"), en `frontend/tests/ConfirmModal.event.test.tsx` (FR-002, FR-014)
 
 ### Implementation for User Story 2
 
 - [ ] T037 [US2] Ampliar `backend/Extraction/ProposalMapper.cs` con el evento: título, fecha, hora opcional, fecha del gasto = fecha del evento, avisos de múltiples ítems y fecha ambigua (FR-002, FR-003b, FR-005)
 - [ ] T038 [US2] Ampliar `POST /api/entries` en `backend/Api/EntriesEndpoints.cs` para guardar evento y gasto en una sola transacción con su validador de evento (FR-007, FR-009)
-- [ ] T039 [US2] Ampliar `frontend/src/components/ConfirmModal.tsx` con la sección de evento y la visualización de avisos (FR-002, FR-014) — depende de T031
+- [ ] T039 [US2] Ampliar `frontend/src/components/ConfirmModal.tsx` con la sección de evento y la visualización de avisos con los textos exactos de FR-014, uno por código (`MULTIPLE_EVENTS`, `MULTIPLE_EXPENSES`, `DEFAULT_CATEGORY`, `AMBIGUOUS_DATE`) (FR-002, FR-014) — depende de T031
 
 **Checkpoint**: US1 y US2 funcionan de forma independiente
 
