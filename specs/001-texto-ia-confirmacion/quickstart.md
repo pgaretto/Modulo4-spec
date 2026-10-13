@@ -8,6 +8,7 @@ Guía para comprobar de punta a punta que la feature funciona. Los detalles de l
 - SQL Server accesible; cadena de conexión en la configuración del backend (`ConnectionStrings:Default`).
 - Clave de Anthropic en la configuración del backend (`Anthropic:ApiKey`) y modelo Haiku en `Anthropic:Model`. La clave nunca se commitea (usar user-secrets o variables de entorno).
 - Docker disponible, para los tests de integración con SQL Server (Testcontainers).
+- Un token de desarrollo para el backend: `dotnet user-jwts create --name fede` (y otro con `--name sofi` para probar el aislamiento). El frontend lo toma de la variable `VITE_DEV_TOKEN` o de `localStorage`, hasta que exista la pantalla de login.
 
 ## Arranque
 

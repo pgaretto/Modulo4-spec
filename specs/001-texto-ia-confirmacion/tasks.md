@@ -39,7 +39,7 @@
 **⚠️ CRITICAL**: Ninguna historia puede empezar hasta completar esta fase
 
 - [ ] T006 Crear las entidades en `backend/Domain/`: `Category` (`Id`, `UserId` nulo = del sistema, `Name` string (1-40) obligatorio), `Event` (`Id`, `UserId`, `Title` string (1-120) obligatorio, `Date` obligatoria, `Time` nulo = todo el día, `CreatedAt` UTC) y `Expense` (`Id`, `UserId`, `Amount` decimal(18,2) mayor que 0, `CategoryId`, `Date` obligatoria, `CreatedAt` UTC) según data-model.md
-- [ ] T007 Crear `backend/Auth/CurrentUser.cs` que lee el `UserId` solo de los claims del token (nunca del cuerpo) y registrar el esquema Bearer en `backend/Program.cs`; solicitudes sin sesión válida o vencida devuelven 401 (FR-012, RNF-03)
+- [ ] T007 Crear `backend/Auth/CurrentUser.cs` que lee el `UserId` solo de los claims del token (nunca del cuerpo) y registrar el esquema Bearer en `backend/Program.cs`; solicitudes sin sesión válida o vencida devuelven 401; verificar que el esquema Bearer acepte los tokens de `dotnet user-jwts` (FR-012, RNF-03)
 - [ ] T008 Crear `backend/Data/AppDbContext.cs` (EF Core, SQL Server) con filtros globales por `UserId` de `CurrentUser` en `Event`, `Expense` y `Category` propias (las del sistema, `UserId` nulo, visibles para todos), y `UserId` asignado siempre desde `CurrentUser` al guardar (RNF-03, Principio II) — depende de T006 y T007
 - [ ] T009 Crear la migración inicial en `backend/Data/Migrations/` con las tablas `Events`, `Expenses`, `Categories`, `Amount` como `decimal(18,2)`, índice único de `Name` por usuario sin distinguir mayúsculas, y la siembra de las categorías del sistema: Comida, Transporte, Salidas, Salud, Otros — depende de T008
 - [ ] T010 [P] Crear el manejo de errores en `backend/Api/ErrorHandling.cs` con el formato `{ "code", "message" }` del contrato (`Error`) y respuestas 400, 404, 409, 422 y 504
@@ -62,11 +62,12 @@
 - [ ] T014 [P] [US1] Test de contrato de `POST /api/proposals` (200, 400, 401, 422, 504) en `backend.Tests/Contract/ProposalsContractTests.cs` (FR-001, FR-011)
 - [ ] T015 [P] [US1] Test de contrato de `POST /api/entries` con un gasto (201, 400, 401) en `backend.Tests/Contract/EntriesContractTests.cs` (FR-007)
 - [ ] T016 [P] [US1] Test de integración: `POST /api/proposals` deja 0 filas nuevas en `Events` y `Expenses` en `backend.Tests/Integration/ProposalsDoNotPersistTests.cs` (FR-007, SC-004, Principio I)
+- [ ] T016b [P] [US1] Test de frontend en `frontend/tests/NoSaveWithoutConfirm.test.tsx`: al enviar el texto solo se llama a `/api/proposals`; `/api/entries` se llama únicamente al presionar "Confirmar" y nunca al cancelar o cerrar el modal con Escape (FR-007, SC-004, Principio I)
 - [ ] T017 [P] [US1] Test de integración: `POST /api/entries` guarda el gasto con el `UserId` del token e ignora cualquier `userId` del cuerpo; Sofi no ve el gasto de Fede, en `backend.Tests/Integration/EntriesIsolationTests.cs` (FR-010, RNF-03, AC-10)
 - [ ] T018 [P] [US1] Tests unitarios de validación del gasto (monto mayor que 0, fecha válida, categoría del sistema o propia del usuario) en `backend.Tests/Unit/ExpenseValidationTests.cs` (FR-009, FR-004b)
 - [ ] T019 [P] [US1] Tests unitarios de `ProposalMapper` para el gasto: fecha por defecto = hoy, categoría "Otros" con aviso `DEFAULT_CATEGORY`, primer gasto por orden de aparición con aviso `MULTIPLE_EXPENSES`, en `backend.Tests/Unit/ProposalMappingTests.cs` (FR-003b, FR-005)
 - [ ] T020 [P] [US1] Tests de `EntryInput`: texto vacío o solo espacios no se envía, más de 500 caracteres se bloquea con aviso, indicador de carga y bloqueo de reenvío mientras procesa, en `frontend/tests/EntryInput.test.tsx` (FR-001, FR-013)
-- [ ] T021 [P] [US1] Test del modal: muestra el gasto propuesto ($2.500, Comida, fecha de hoy) y "Confirmar" llama a `/api/entries`, en `frontend/tests/ConfirmModal.expense.test.tsx` (FR-006, AC-05)
+- [ ] T021 [P] [US1] Test del modal: muestra el gasto propuesto ($2.500, Comida, fecha de hoy), "Confirmar" llama a `/api/entries`, al cambiar el monto se envía el valor corregido y "Cancelar" no hace ninguna llamada, en `frontend/tests/ConfirmModal.expense.test.tsx` (FR-006, FR-008, AC-05)
 
 ### Implementation for User Story 1
 
@@ -79,8 +80,9 @@
 - [ ] T028 [US1] Crear el validador del gasto y `backend/Api/EntriesEndpoints.cs` con `POST /api/entries` (parte de gasto): `UserId` desde `CurrentUser`, validación de monto, fecha y categoría (FR-007, FR-009, FR-010)
 - [ ] T029 [P] [US1] Crear `backend/Api/CategoriesEndpoints.cs` con `GET /api/categories` (del sistema más las propias del usuario) (FR-004)
 - [ ] T030 [P] [US1] Crear `frontend/src/components/EntryInput.tsx`: campo único de texto, validación de vacío y máximo 500, indicador de carga y botón deshabilitado mientras procesa (FR-001, FR-013)
-- [ ] T031 [US1] Crear `frontend/src/components/ConfirmModal.tsx` (modo creación, parte de gasto): título "¿Está todo bien?", monto, categoría y fecha precompletados, botón "Confirmar" (FR-006, AC-05)
+- [ ] T031 [US1] Crear `frontend/src/components/ConfirmModal.tsx` (modo creación, parte de gasto): título "¿Está todo bien?", monto, categoría y fecha precompletados **y editables**, botones "Confirmar" y "Cancelar" (FR-006, FR-008, AC-05)
 - [ ] T032 [US1] Conectar el flujo en `frontend/src/App.tsx`: texto → propuesta → modal → guardado, con mensaje de error que conserva el texto escrito (FR-011) — depende de T030 y T031
+- [ ] T032b [US1] En `frontend/src/App.tsx`: ante un 401 conservar el texto escrito, mostrar "Tu sesión venció, iniciá sesión de nuevo" y dejar un punto de redirección al login (la pantalla la aporta la feature de auth) (FR-012)
 
 **Checkpoint**: US1 funcional y probable por sí sola (MVP)
 
@@ -111,19 +113,19 @@
 
 ## Phase 5: User Story 4 - Revisar y corregir antes de guardar (Priority: P1)
 
-**Goal**: El modal tiene todos los campos editables, valida, permite cancelar sin guardar y permite agregar categorías propias.
+**Goal**: El modal valida todos los campos, se maneja por teclado y permite agregar categorías propias.
 
 **Independent Test**: Editar un campo y confirmar guarda el valor corregido; cancelar no guarda nada (AC-05).
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T040 [P] [US4] Tests del modal: editar el monto guarda el valor corregido; cancelar o presionar Escape no hace ninguna llamada a `/api/entries`; monto vacío, negativo o no numérico bloquea "Confirmar", en `frontend/tests/ConfirmModal.edit.test.tsx` (FR-006, FR-008, FR-009)
+- [ ] T040 [P] [US4] Tests del modal: el evento es editable (título y fecha); Escape cancela sin llamar a `/api/entries`; monto vacío, negativo o no numérico, título vacío y fecha inválida bloquean "Confirmar", en `frontend/tests/ConfirmModal.edit.test.tsx` (FR-006, FR-008, FR-009)
 - [ ] T041 [P] [US4] Test de accesibilidad y diseño: foco atrapado en el modal, uso solo con teclado, sin scroll horizontal a 360px de ancho, en `frontend/tests/ConfirmModal.a11y.test.tsx` (FR-015, RNF-02, AC-13)
 - [ ] T042 [P] [US4] Test de contrato e integración de `POST /api/categories`: 201, 400 (`Name` string (1-40)), 409 por nombre repetido sin distinguir mayúsculas; Sofi no ve las categorías propias de Fede; un gasto con categoría de otro usuario devuelve 400, en `backend.Tests/Contract/CategoriesContractTests.cs` (FR-004b, RNF-03)
 
 ### Implementation for User Story 4
 
-- [ ] T043 [US4] Hacer editables todos los campos de `frontend/src/components/ConfirmModal.tsx`, con validación (monto mayor que 0, fecha válida, título 1-120), cancelar y Escape sin guardar, y foco atrapado (FR-006, FR-008, FR-009, FR-015)
+- [ ] T043 [US4] En `frontend/src/components/ConfirmModal.tsx`: extender la edición al evento, validar todos los campos (monto mayor que 0, fecha válida, título 1-120), cerrar con Escape y atrapar el foco (FR-006, FR-009, FR-015)
 - [ ] T044 [US4] Agregar `POST /api/categories` en `backend/Api/CategoriesEndpoints.cs`: `Name` string (1-40), único por usuario sin distinguir mayúsculas, `UserId` desde `CurrentUser` (FR-004b)
 - [ ] T045 [US4] Agregar al modal el selector de categoría con alta de una categoría propia (FR-004b) — depende de T043 y T044
 - [ ] T046 [P] [US4] Crear `frontend/src/styles.css` mobile-first con ancho mínimo de 360px para el campo de texto y el modal (FR-015, RNF-02)
@@ -249,6 +251,6 @@ Task: "EntryInput en frontend/src/components/EntryInput.tsx"
 
 ### Notas
 
-- El MVP ya cumple la constitution: US1 incluye el modal con "Confirmar" y el endpoint de propuestas no escribe en la base
+- El MVP cumple la constitution: US1 incluye un modal editable con "Confirmar" y "Cancelar", y el endpoint de propuestas no escribe en la base
 - El calendario, el presupuesto, el registro/login y los reintentos offline son otras features
 - Hacer un commit por tarea o grupo lógico, mencionando los IDs de requisito

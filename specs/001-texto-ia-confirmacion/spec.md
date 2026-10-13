@@ -153,13 +153,14 @@ El usuario ve la lista de sus eventos y gastos del mes y puede corregir o borrar
 - **SC-001**: Desde que el usuario envía el texto hasta que ve el modal de confirmación pasan menos de 5 segundos (RNF-05).
 - **SC-002**: En un conjunto de 100 solicitudes consecutivas, al menos el 95% de las interpretaciones responde en menos de 3 segundos (RNF-01, AC-12).
 - **SC-003**: En un conjunto de al menos 50 frases coloquiales de validación guardado en el repositorio con sus valores esperados, al menos el 90% tiene el monto y la categoría del gasto idénticos a los esperados (RNF-06, AC-16).
-- **SC-004**: El 100% de los eventos y gastos guardados pasó por el modal de confirmación; no existe ningún camino de guardado sin confirmar.
+- **SC-004**: Ninguna acción de la interfaz crea ni modifica un evento o gasto sin que el usuario presione "Confirmar" en el modal; el texto enviado a la IA nunca se guarda por sí solo.
 - **SC-005**: Un usuario puede registrar un gasto simple en un solo campo y una confirmación, sin completar ningún otro campo.
 - **SC-006**: Un usuario puede corregir o borrar un ítem guardado en no más de 3 interacciones y ver el saldo del mes actualizado.
 
 ## Assumptions
 
-- El usuario ya está registrado y autenticado; el registro y el login son otra feature (RF-11, RF-12).
+- El usuario ya está registrado y autenticado; el registro y el login son otra feature (RF-11, RF-12). Hasta que exista, esta feature se prueba con usuarios simulados (tests) o con tokens de desarrollo generados con `dotnet user-jwts create`.
+- La API acepta datos de su propio usuario autenticado: el modal es el único camino de la interfaz para guardar, pero el servidor no puede distinguir un cliente que llame directo. Esto no expone datos de otros usuarios (RNF-03).
 - El presupuesto mensual y el cuadro de saldo se definen en otra feature (RF-03, RF-09, RF-10); aquí el gasto confirmado solo debe quedar disponible para ese cálculo.
 - Todo se maneja en una única moneda local; la entrada por voz o audio queda fuera de alcance de la v1.
 - La lista inicial de categorías es Comida, Transporte, Salidas, Salud y Otros (esta última para lo que no encaja en las demás).
