@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: Smart-Agenda API - Entrada por texto con IA
+  version: 1.0.0
+  description: >
+    Todos los endpoints exigen un usuario autenticado (Bearer). El UserId se toma
+    siempre del token; nunca viaja en el cuerpo. Un recurso de otro usuario responde 404.
+servers:
+  - url: /api
+security:
+  - bearerAuth: []
+paths:
+  /proposals:
+    post:
+      summary: Interpreta una frase y devuelve una propuesta. NO guarda nada.
+      operationId: createProposal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalRequest'
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Propuesta con evento y/o gasto.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proposal'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '422':
+          description: El texto no contiene ni evento ni gasto reconocible.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '504':
+          description: La IA no respondió dentro de 4 s o falló; el cliente conserva el texto (FR-011).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /entries:
+    post:
+      summary: Confirma una propuesta (única vía de creación de eventos y gastos).
+      operationId: confirmEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmRequest'
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '201':
+          description: Ítems guardados.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+  /events:
+    get:
+      summary: Lista los eventos del usuario en un rango de fechas.
+      operationId: listEvents
+      parameters:
+        - { name: from, in: query, required: true, schema: { type: string, format: date } }
+        - { name: to, in: query, required: true, schema: { type: string, format: date } }
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Eventos del usuario autenticado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Event' }
+  /events/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+    put:
+      summary: Edita un evento guardado.
+      operationId: updateEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EventInput' }
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Evento actualizado.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Event' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Borra un evento guardado.
+      operationId: deleteEvent
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '204': { description: Borrado. }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /expenses:
+    get:
+      summary: Lista los gastos del usuario en un rango de fechas.
+      operationId: listExpenses
+      parameters:
+        - { name: from, in: query, required: true, schema: { type: string, format: date } }
+        - { name: to, in: query, required: true, schema: { type: string, format: date } }
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Gastos del usuario autenticado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Expense' }
+  /expenses/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+    put:
+      summary: Edita un gasto guardado.
+      operationId: updateExpense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ExpenseInput' }
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Gasto actualizado.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Expense' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Borra un gasto guardado.
+      operationId: deleteExpense
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '204': { description: Borrado. }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /categories:
+    get:
+      summary: Categorías del sistema más las propias del usuario.
+      operationId: listCategories
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '200':
+          description: Lista de categorías visibles para el usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Category' }
+    post:
+      summary: Crea una categoría propia.
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 40 }
+      responses:
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '201':
+          description: Categoría creada.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Category' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '409':
+          description: Ya existe una categoría con ese nombre para el usuario.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    Unauthorized:
+      description: Sin sesión o sesión vencida. No se procesa ni se guarda nada (FR-012).
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    ValidationError:
+      description: Datos inválidos (monto no positivo, fecha inválida, título vacío, categoría ajena).
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: No existe para el usuario autenticado (incluye ítems de otros usuarios).
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    ProposalRequest:
+      type: object
+      required: [text, today]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 500 }
+        today:
+          type: string
+          format: date
+          description: Fecha local del usuario, base para "mañana", "el martes que viene", etc.
+    Proposal:
+      type: object
+      required: [warnings]
+      properties:
+        event:
+          allOf: [ { $ref: '#/components/schemas/EventInput' } ]
+          nullable: true
+        expense:
+          allOf: [ { $ref: '#/components/schemas/ExpenseInput' } ]
+          nullable: true
+        warnings:
+          type: array
+          items:
+            type: string
+            enum: [MULTIPLE_EVENTS, MULTIPLE_EXPENSES, DEFAULT_CATEGORY, AMBIGUOUS_DATE]
+    ConfirmRequest:
+      type: object
+      description: Datos finales (ya editados por el usuario). Al menos uno de los dos es obligatorio.
+      properties:
+        event:
+          allOf: [ { $ref: '#/components/schemas/EventInput' } ]
+          nullable: true
+        expense:
+          allOf: [ { $ref: '#/components/schemas/ExpenseInput' } ]
+          nullable: true
+    ConfirmResponse:
+      type: object
+      properties:
+        event:
+          allOf: [ { $ref: '#/components/schemas/Event' } ]
+          nullable: true
+        expense:
+          allOf: [ { $ref: '#/components/schemas/Expense' } ]
+          nullable: true
+    EventInput:
+      type: object
+      required: [title, date]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 120 }
+        date: { type: string, format: date }
+        time:
+          type: string
+          pattern: '^([01]\d|2[0-3]):[0-5]\d$'
+          nullable: true
+          description: HH:mm; nulo = todo el día.
+    Event:
+      allOf:
+        - { $ref: '#/components/schemas/EventInput' }
+        - type: object
+          required: [id]
+          properties:
+            id: { type: string, format: uuid }
+    ExpenseInput:
+      type: object
+      required: [amount, categoryId, date]
+      properties:
+        amount: { type: number, format: decimal, exclusiveMinimum: true, minimum: 0 }
+        categoryId: { type: string, format: uuid }
+        date: { type: string, format: date }
+    Expense:
+      allOf:
+        - { $ref: '#/components/schemas/ExpenseInput' }
+        - type: object
+          required: [id]
+          properties:
+            id: { type: string, format: uuid }
+    Category:
+      type: object
+      required: [id, name, isSystem]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        isSystem: { type: boolean }
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }

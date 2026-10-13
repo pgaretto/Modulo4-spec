@@ -1,0 +1,3 @@
+# Claude Code: configuración y copias de trabajo locales
+.claude/settings.local.json
+.claude/worktrees/
