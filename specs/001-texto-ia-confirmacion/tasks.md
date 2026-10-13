@@ -24,11 +24,11 @@
 
 **Purpose**: Inicializar los tres proyectos y la configuración base
 
-- [ ] T001 Crear el proyecto ASP.NET (.NET 10, Minimal APIs) en `backend/SmartAgenda.Api.csproj` con `backend/Program.cs` vacío y las carpetas `Api/`, `Domain/`, `Extraction/`, `Data/`, `Auth/` según plan.md
-- [ ] T002 Crear el proyecto de tests xUnit en `backend.Tests/SmartAgenda.Tests.csproj` con referencias a `Microsoft.AspNetCore.Mvc.Testing` y `Testcontainers.MsSql`, y las carpetas `Contract/`, `Integration/`, `Unit/`, `Fakes/`, `Eval/`
-- [ ] T003 Crear el proyecto React + Vite + TypeScript (Node 24 LTS) en `frontend/` con Vitest y React Testing Library, y las carpetas `src/components/`, `src/api/`, `tests/`
-- [ ] T004 [P] Configurar `backend/appsettings.json` con `ConnectionStrings:Default`, `Anthropic:Model` = `claude-haiku-5-5` y `Anthropic:TimeoutSeconds` = 4; la clave `Anthropic:ApiKey` solo por user-secrets o variable de entorno; agregar `.gitignore` en la raíz (bin, obj, node_modules, `appsettings.Development.json`, `.claude/settings.local.json`, `.claude/worktrees/`)
-- [ ] T005 [P] Configurar formato y lint: `backend/.editorconfig` y ESLint + Prettier en `frontend/`
+- [X] T001 Crear el proyecto ASP.NET (.NET 10, Minimal APIs) en `backend/SmartAgenda.Api.csproj` con `backend/Program.cs` vacío y las carpetas `Api/`, `Domain/`, `Extraction/`, `Data/`, `Auth/` según plan.md
+- [X] T002 Crear el proyecto de tests xUnit en `backend.Tests/SmartAgenda.Tests.csproj` con referencias a `Microsoft.AspNetCore.Mvc.Testing` y `Microsoft.EntityFrameworkCore.InMemory` (desviación: sin Docker en este entorno no se usa Testcontainers; se puede sumar luego), y las carpetas `Contract/`, `Integration/`, `Unit/`, `Fakes/`, `Eval/`
+- [X] T003 Crear el proyecto React + Vite + TypeScript (Node 24 LTS) en `frontend/` con Vitest y React Testing Library, y las carpetas `src/components/`, `src/api/`, `tests/`
+- [X] T004 [P] Configurar `backend/appsettings.json` con `ConnectionStrings:Default`, `Anthropic:Model` = `claude-haiku-5-5` y `Anthropic:TimeoutSeconds` = 4; la clave `Anthropic:ApiKey` solo por user-secrets o variable de entorno; agregar `.gitignore` en la raíz (bin, obj, node_modules, `appsettings.Development.json`, `.claude/settings.local.json`, `.claude/worktrees/`)
+- [X] T005 [P] Configurar formato y lint: `backend/.editorconfig` y oxlint (incluido en la plantilla de Vite) + Prettier en `frontend/`
 
 ---
 

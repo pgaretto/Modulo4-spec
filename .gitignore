@@ -1,3 +1,27 @@
 # Claude Code: configuración y copias de trabajo locales
 .claude/settings.local.json
 .claude/worktrees/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+backend/appsettings.Development.json
+
+# Node
+node_modules/
+dist/
+*.log
+
+# Secretos y entorno local (la clave de Anthropic va en user-secrets o variables de entorno)
+.env
+.env.*
+!.env.example
+
+# Editor y sistema
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
