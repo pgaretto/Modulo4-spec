@@ -135,7 +135,7 @@ El usuario ve la lista de sus eventos y gastos del mes y puede corregir o borrar
 - **FR-011**: El sistema MUST informar al usuario cuando no pueda interpretar el texto o falle el procesamiento, conservando el texto escrito. Se considera falla si la IA no responde dentro de 4 segundos.
 - **FR-012**: El sistema MUST rechazar, sin procesar ni guardar nada, toda solicitud sin sesión válida o con sesión vencida, y MUST pedir al usuario iniciar sesión conservando el texto escrito.
 - **FR-013**: Mientras la IA procesa el texto, la pantalla MUST mostrar un indicador de carga y MUST impedir un segundo envío del mismo texto.
-- **FR-014**: Los avisos de la propuesta (más de un ítem del mismo tipo, categoría "Otros" por no poder deducirla, fecha ambigua) MUST mostrarse dentro del modal, junto al dato afectado, en lenguaje claro.
+- **FR-014**: Los avisos de la propuesta (más de un ítem del mismo tipo, categoría "Otros" por no poder deducirla, fecha ambigua) MUST mostrarse dentro del modal, junto al dato afectado, con estos textos exactos: "Había más de un gasto; se propone el primero" (o "Había más de un evento; se propone el primero"), "No pude deducir la categoría; elegí una" y "Fecha estimada; revisala".
 - **FR-015**: El modal y la lista de ítems guardados MUST poder usarse solo con teclado (foco dentro del modal, Escape = cancelar) y MUST cumplir el ancho mínimo de 360px sin recortes ni scroll horizontal (RNF-02).
 
 ### Key Entities

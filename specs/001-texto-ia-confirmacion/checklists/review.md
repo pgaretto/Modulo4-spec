@@ -10,29 +10,29 @@
 
 ## Seguridad y aislamiento
 
-- [ ] CHK001 ¿Es coherente la regla de confirmación obligatoria de la constitution (nada se guarda sin pasar por el modal) con la edición directa de ítems ya guardados, que no pasa por el modal? [Conflict, Spec §FR-007b vs Constitution §I]
-- [ ] CHK002 ¿Está definido en la spec cómo debe responder el sistema ante el acceso a un ítem de otro usuario (rechazo igual a "no existe", sin revelar que existe)? [Clarity, Spec §FR-007b, Plan D6]
-- [ ] CHK003 ¿Se especifica qué ocurre si un gasto referencia una categoría propia de otro usuario? [Gap, Spec §FR-004b]
-- [ ] CHK004 ¿Están definidos los requisitos para solicitudes sin sesión o con sesión vencida en cada endpoint? [Gap, Contract]
+- [x] CHK001 ¿Es coherente la regla de confirmación obligatoria de la constitution (nada se guarda sin pasar por el modal) con la edición directa de ítems ya guardados, que no pasa por el modal? [Conflict, Spec §FR-007b vs Constitution §I]
+- [x] CHK002 ¿Está definido en la spec cómo debe responder el sistema ante el acceso a un ítem de otro usuario (rechazo igual a "no existe", sin revelar que existe)? [Clarity, Spec §FR-007b, Plan D6]
+- [x] CHK003 ¿Se especifica qué ocurre si un gasto referencia una categoría propia de otro usuario? [Gap, Spec §FR-004b]
+- [x] CHK004 ¿Están definidos los requisitos para solicitudes sin sesión o con sesión vencida en cada endpoint? [Gap, Contract]
 
 ## Calidad de la IA
 
-- [ ] CHK005 ¿Está definido qué significa "el primero" de cada tipo cuando la frase menciona varios gastos o eventos (orden en el texto, monto mayor, otro criterio)? [Ambiguity, Spec §FR-005]
-- [ ] CHK006 ¿Se cuantifica "tarda de más" para el servicio de IA, con un umbral coherente con el límite de 5 s del modal? [Clarity, Spec §Edge Cases, SC-001]
-- [ ] CHK007 ¿Está nombrada la categoría por defecto cuando no se puede deducir (hoy el spec dice "por defecto" en un lugar y "Otros" en otro)? [Consistency, Spec §Edge Cases vs §Assumptions]
-- [ ] CHK008 ¿Se define qué fecha concreta corresponde a expresiones ambiguas como "el finde" o "la semana que viene"? [Ambiguity, Spec §Edge Cases]
-- [ ] CHK009 ¿Se pueden medir de forma objetiva SC-002 (95 % < 3 s) y SC-003, con el tamaño de la muestra y las condiciones de medición escritos? [Measurability, Spec §SC-002, SC-003]
+- [x] CHK005 ¿Está definido qué significa "el primero" de cada tipo cuando la frase menciona varios gastos o eventos (orden en el texto, monto mayor, otro criterio)? [Ambiguity, Spec §FR-005]
+- [x] CHK006 ¿Se cuantifica "tarda de más" para el servicio de IA, con un umbral coherente con el límite de 5 s del modal? [Clarity, Spec §Edge Cases, SC-001]
+- [x] CHK007 ¿Está nombrada la categoría por defecto cuando no se puede deducir (hoy el spec dice "por defecto" en un lugar y "Otros" en otro)? [Consistency, Spec §Edge Cases vs §Assumptions]
+- [x] CHK008 ¿Se define qué fecha concreta corresponde a expresiones ambiguas como "el finde" o "la semana que viene"? [Ambiguity, Spec §Edge Cases]
+- [x] CHK009 ¿Se pueden medir de forma objetiva SC-002 (95 % < 3 s) y SC-003, con el tamaño de la muestra y las condiciones de medición escritos? [Measurability, Spec §SC-002, SC-003]
 
 ## UX del modal y flujo
 
-- [ ] CHK010 ¿Están definidos los requisitos de estado de carga mientras la IA procesa (indicador, bloqueo de reenvío)? [Gap, Spec §FR-001]
-- [ ] CHK011 ¿Se define cómo se le muestran al usuario los avisos de la propuesta (varios ítems, categoría por defecto, fecha ambigua)? [Gap, Spec §FR-005]
-- [ ] CHK012 ¿Hay requisitos de accesibilidad (teclado, foco) y de ancho mínimo de 360px para el modal y la lista de ítems guardados? [Coverage, Gap, RNF-02]
+- [x] CHK010 ¿Están definidos los requisitos de estado de carga mientras la IA procesa (indicador, bloqueo de reenvío)? [Gap, Spec §FR-001]
+- [x] CHK011 ¿Se define cómo se le muestran al usuario los avisos de la propuesta (varios ítems, categoría por defecto, fecha ambigua)? [Gap, Spec §FR-005]
+- [x] CHK012 ¿Hay requisitos de accesibilidad (teclado, foco) y de ancho mínimo de 360px para el modal y la lista de ítems guardados? [Coverage, Gap, RNF-02]
 
 ## API y contrato
 
-- [ ] CHK013 ¿Está especificado en la spec que el borrado es definitivo y sin deshacer? [Gap, Spec §FR-007b]
-- [ ] CHK014 ¿Existe un requisito en la spec que respalde los listados de eventos y gastos del contrato (cómo encuentra el usuario el ítem a editar o borrar)? [Traceability, Gap, Spec §FR-007b]
+- [x] CHK013 ¿Está especificado en la spec que el borrado es definitivo y sin deshacer? [Gap, Spec §FR-007b]
+- [x] CHK014 ¿Existe un requisito en la spec que respalde los listados de eventos y gastos del contrato (cómo encuentra el usuario el ítem a editar o borrar)? [Traceability, Gap, Spec §FR-007b]
 
 ## Notes
 
