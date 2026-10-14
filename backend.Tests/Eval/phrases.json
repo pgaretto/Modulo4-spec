@@ -1,0 +1,422 @@
+[
+  {
+    "text": "Me tomé un café 2500",
+    "today": "2026-10-14",
+    "expectedAmount": 2500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "El finde me voy a Mar del Plata, nafta 40 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 40000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": "Viaje a Mar del Plata"
+  },
+  {
+    "text": "El martes que viene tengo dentista a las 4 de la tarde y me cobra 25 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 25000,
+    "expectedCategory": "Salud",
+    "expectedEvent": "Dentista"
+  },
+  {
+    "text": "Mañana almuerzo con mamá y gasto 15000",
+    "today": "2026-10-14",
+    "expectedAmount": 15000,
+    "expectedCategory": "Comida",
+    "expectedEvent": "Almuerzo con mamá"
+  },
+  {
+    "text": "Cargué la SUBE con 5000",
+    "today": "2026-10-14",
+    "expectedAmount": 5000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Asado con los de Futbol, 30 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 30000,
+    "expectedCategory": "Comida",
+    "expectedEvent": "Asado con los de Futbol"
+  },
+  {
+    "text": "Compré el pasaje de micro a Rosario 12 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 12000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Fui al super y gasté 48500",
+    "today": "2026-10-14",
+    "expectedAmount": 48500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Cine con Sofi 9 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 9000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Farmacia, ibuprofeno 3200",
+    "today": "2026-10-14",
+    "expectedAmount": 3200,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Uber al aeropuerto 18 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 18000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Cena en lo de Marta, llevé vino 7500",
+    "today": "2026-10-14",
+    "expectedAmount": 7500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pagué la consulta con el cardiólogo 35 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 35000,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Birra con los pibes 12000",
+    "today": "2026-10-14",
+    "expectedAmount": 12000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Medialunas y café 4200",
+    "today": "2026-10-14",
+    "expectedAmount": 4200,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Peaje 2800",
+    "today": "2026-10-14",
+    "expectedAmount": 2800,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Cargué nafta 20 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 20000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Entradas para el recital 45 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 45000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Compré un kilo de pan 1800",
+    "today": "2026-10-14",
+    "expectedAmount": 1800,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Turno con la psicóloga mañana a las 11, 28 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 28000,
+    "expectedCategory": "Salud",
+    "expectedEvent": "Turno con la psicóloga"
+  },
+  {
+    "text": "Fui al kiosco, 1500",
+    "today": "2026-10-14",
+    "expectedAmount": 1500,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Fotocopias de la facu 2000",
+    "today": "2026-10-14",
+    "expectedAmount": 2000,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Apuntes de la cursada 6500",
+    "today": "2026-10-14",
+    "expectedAmount": 6500,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Taxi a casa 6 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 6000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Almuerzo con el cliente, pagué 22 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 22000,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Hoy fui al dentista y me salió 40 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 40000,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Boliche el sábado, entrada 8 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 8000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": "Boliche"
+  },
+  {
+    "text": "Compré remedios 9800",
+    "today": "2026-10-14",
+    "expectedAmount": 9800,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Bondi 700",
+    "today": "2026-10-14",
+    "expectedAmount": 700,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pizza con amigos 14500",
+    "today": "2026-10-14",
+    "expectedAmount": 14500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pasaje de tren 3 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 3000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Verdulería 5600",
+    "today": "2026-10-14",
+    "expectedAmount": 5600,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pagué el estacionamiento 2500",
+    "today": "2026-10-14",
+    "expectedAmount": 2500,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Fui al teatro, 20 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 20000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Análisis de sangre 15 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 15000,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Delivery de sushi 16500",
+    "today": "2026-10-14",
+    "expectedAmount": 16500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Regalo de cumpleaños para Lu 12 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 12000,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Peluquería 7 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 7000,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Mañana tengo reunión con mamá a las 10",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": "Reunión con mamá"
+  },
+  {
+    "text": "El jueves tengo examen de matemática a las 8",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": "Examen de matemática"
+  },
+  {
+    "text": "Pasado mañana viaje a Córdoba",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": "Viaje a Córdoba"
+  },
+  {
+    "text": "El viernes cumple de Juan a las 21",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": "Cumple de Juan"
+  },
+  {
+    "text": "Dentista el lunes a las 15",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": "Dentista"
+  },
+  {
+    "text": "Hola, ¿cómo andás?",
+    "today": "2026-10-14",
+    "expectedAmount": null,
+    "expectedCategory": null,
+    "expectedEvent": null
+  },
+  {
+    "text": "Cargué 10 lucas de nafta y 2 mil de peaje",
+    "today": "2026-10-14",
+    "expectedAmount": 10000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Café 2500 y taxi 4000",
+    "today": "2026-10-14",
+    "expectedAmount": 2500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Almorcé 9 lucas, después pasé por la farmacia y gasté 3 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 9000,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Gasté 2,5 lucas en un café",
+    "today": "2026-10-14",
+    "expectedAmount": 2500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pagué 12 mil de colectivo del mes",
+    "today": "2026-10-14",
+    "expectedAmount": 12000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Compré un helado 3500",
+    "today": "2026-10-14",
+    "expectedAmount": 3500,
+    "expectedCategory": "Comida",
+    "expectedEvent": null
+  },
+  {
+    "text": "Turno con el oculista el miércoles a las 17, consulta 30 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 30000,
+    "expectedCategory": "Salud",
+    "expectedEvent": "Turno con el oculista"
+  },
+  {
+    "text": "Fui a la cancha, entrada 25 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 25000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Café con Ana mañana a las 16, pago yo 4500",
+    "today": "2026-10-14",
+    "expectedAmount": 4500,
+    "expectedCategory": "Comida",
+    "expectedEvent": "Café con Ana"
+  },
+  {
+    "text": "Subte 1200",
+    "today": "2026-10-14",
+    "expectedAmount": 1200,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Carga de la tarjeta de transporte 10000",
+    "today": "2026-10-14",
+    "expectedAmount": 10000,
+    "expectedCategory": "Transporte",
+    "expectedEvent": null
+  },
+  {
+    "text": "Compré vitaminas 11 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 11000,
+    "expectedCategory": "Salud",
+    "expectedEvent": null
+  },
+  {
+    "text": "Bar con los compañeros del laburo 18 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 18000,
+    "expectedCategory": "Salidas",
+    "expectedEvent": null
+  },
+  {
+    "text": "Jabón y detergente 4900",
+    "today": "2026-10-14",
+    "expectedAmount": 4900,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Clase de inglés 25 lucas",
+    "today": "2026-10-14",
+    "expectedAmount": 25000,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  },
+  {
+    "text": "Pagué las expensas 85 mil",
+    "today": "2026-10-14",
+    "expectedAmount": 85000,
+    "expectedCategory": "Otros",
+    "expectedEvent": null
+  }
+]

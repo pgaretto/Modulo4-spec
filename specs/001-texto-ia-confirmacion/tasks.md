@@ -59,30 +59,30 @@
 
 ### Tests for User Story 1 ⚠️ (escribir primero; deben fallar)
 
-- [ ] T014 [P] [US1] Test de contrato de `POST /api/proposals` (200, 400, 401, 422, 504) en `backend.Tests/Contract/ProposalsContractTests.cs` (FR-001, FR-011)
-- [ ] T015 [P] [US1] Test de contrato de `POST /api/entries` con un gasto (201, 400, 401) en `backend.Tests/Contract/EntriesContractTests.cs` (FR-007)
-- [ ] T016 [P] [US1] Test de integración: `POST /api/proposals` deja 0 filas nuevas en `Events` y `Expenses` en `backend.Tests/Integration/ProposalsDoNotPersistTests.cs` (FR-007, SC-004, Principio I)
-- [ ] T016b [P] [US1] Test de frontend en `frontend/tests/NoSaveWithoutConfirm.test.tsx`: al enviar el texto solo se llama a `/api/proposals`; `/api/entries` se llama únicamente al presionar "Confirmar" y nunca al cancelar o cerrar el modal con Escape (FR-007, SC-004, Principio I)
-- [ ] T017 [P] [US1] Test de integración: `POST /api/entries` guarda el gasto con el `UserId` del token e ignora cualquier `userId` del cuerpo; Sofi no ve el gasto de Fede, en `backend.Tests/Integration/EntriesIsolationTests.cs` (FR-010, RNF-03, AC-10)
-- [ ] T018 [P] [US1] Tests unitarios de validación del gasto (monto mayor que 0, fecha válida, categoría del sistema o propia del usuario) en `backend.Tests/Unit/ExpenseValidationTests.cs` (FR-009, FR-004b)
-- [ ] T019 [P] [US1] Tests unitarios de `ProposalMapper` para el gasto: fecha por defecto = hoy, categoría "Otros" con aviso `DEFAULT_CATEGORY`, primer gasto por orden de aparición con aviso `MULTIPLE_EXPENSES`, en `backend.Tests/Unit/ProposalMappingTests.cs` (FR-003b, FR-005)
-- [ ] T020 [P] [US1] Tests de `EntryInput`: texto vacío o solo espacios no se envía, más de 500 caracteres se bloquea con aviso, indicador de carga y bloqueo de reenvío mientras procesa, en `frontend/tests/EntryInput.test.tsx` (FR-001, FR-013)
-- [ ] T021 [P] [US1] Test del modal: muestra el gasto propuesto ($2.500, Comida, fecha de hoy), "Confirmar" llama a `/api/entries`, al cambiar el monto se envía el valor corregido y "Cancelar" no hace ninguna llamada, en `frontend/tests/ConfirmModal.expense.test.tsx` (FR-006, FR-008, AC-05)
+- [X] T014 [P] [US1] Test de contrato de `POST /api/proposals` (200, 400, 401, 422, 504) en `backend.Tests/Contract/ProposalsContractTests.cs` (FR-001, FR-011)
+- [X] T015 [P] [US1] Test de contrato de `POST /api/entries` con un gasto (201, 400, 401) en `backend.Tests/Contract/EntriesContractTests.cs` (FR-007)
+- [X] T016 [P] [US1] Test de integración: `POST /api/proposals` deja 0 filas nuevas en `Events` y `Expenses` en `backend.Tests/Integration/ProposalsDoNotPersistTests.cs` (FR-007, SC-004, Principio I)
+- [X] T016b [P] [US1] Test de frontend en `frontend/tests/NoSaveWithoutConfirm.test.tsx`: al enviar el texto solo se llama a `/api/proposals`; `/api/entries` se llama únicamente al presionar "Confirmar" y nunca al cancelar o cerrar el modal con Escape (FR-007, SC-004, Principio I)
+- [X] T017 [P] [US1] Test de integración: `POST /api/entries` guarda el gasto con el `UserId` del token e ignora cualquier `userId` del cuerpo; Sofi no ve el gasto de Fede, en `backend.Tests/Integration/EntriesIsolationTests.cs` (FR-010, RNF-03, AC-10)
+- [X] T018 [P] [US1] Tests unitarios de validación del gasto (monto mayor que 0, fecha válida, categoría del sistema o propia del usuario) en `backend.Tests/Unit/ExpenseValidationTests.cs` (FR-009, FR-004b)
+- [X] T019 [P] [US1] Tests unitarios de `ProposalMapper` para el gasto: fecha por defecto = hoy, categoría "Otros" con aviso `DEFAULT_CATEGORY`, primer gasto por orden de aparición con aviso `MULTIPLE_EXPENSES`, en `backend.Tests/Unit/ProposalMappingTests.cs` (FR-003b, FR-005)
+- [X] T020 [P] [US1] Tests de `EntryInput`: texto vacío o solo espacios no se envía, más de 500 caracteres se bloquea con aviso, indicador de carga y bloqueo de reenvío mientras procesa, en `frontend/tests/EntryInput.test.tsx` (FR-001, FR-013)
+- [X] T021 [P] [US1] Test del modal: muestra el gasto propuesto ($2.500, Comida, fecha de hoy), "Confirmar" llama a `/api/entries`, al cambiar el monto se envía el valor corregido y "Cancelar" no hace ninguna llamada, en `frontend/tests/ConfirmModal.expense.test.tsx` (FR-006, FR-008, AC-05)
 
 ### Implementation for User Story 1
 
-- [ ] T022 [US1] Crear `backend/Extraction/ExtractionPrompt.cs`: prompt de sistema corto y estable, herramienta `registrar_propuesta` con esquema de `event` y `expense`, fecha `today` y día de la semana, solo las categorías del sistema y las reglas de fechas de Assumptions de spec.md (FR-002, FR-003, FR-004)
-- [ ] T023 [US1] Crear `backend/Extraction/AnthropicExtractionService.cs`: llamada a la Messages API con el modelo de `Anthropic:Model`, timeout de 4 s, sin reintentos en el servidor, error 504 si falla (FR-011, RNF-01, RNF-05) — depende de T022
-- [ ] T024 [P] [US1] Crear `backend/Extraction/ProposalMapper.cs` (parte de gasto): convierte la salida del modelo en `Proposal`, resuelve categoría por nombre, aplica fecha por defecto y avisos (FR-003b, FR-005) — depende de T011
-- [ ] T025 [P] [US1] Crear el dataset `backend.Tests/Eval/phrases.json` con **al menos 50 frases** coloquiales (`text`, `today`, `expectedAmount`, `expectedCategory`, `expectedEvent`): las 6 frases semilla del apéndice de PRD.md más frases solo de evento donde no debe extraerse gasto (RNF-06, AC-16, Principio III)
-- [ ] T026 [US1] Crear `backend.Tests/Eval/ExtractionAccuracyEval.cs` con el trait `ExtractionAccuracyEval`, que solo corre si `ANTHROPIC_EVAL_KEY` está definida y exige al menos 90 % de monto y categoría exactos (RNF-06, AC-16) — depende de T023 y T025
-- [ ] T027 [US1] Crear `backend/Api/ProposalsEndpoints.cs` con `POST /api/proposals`: valida `text` (1 a 500 caracteres) y `today`, llama a `IExtractionService`, responde 422 si no hay evento ni gasto, y no accede a la base de datos (FR-001, FR-005, FR-011) — depende de T023 y T024
-- [ ] T028 [US1] Crear el validador del gasto y `backend/Api/EntriesEndpoints.cs` con `POST /api/entries` (parte de gasto): `UserId` desde `CurrentUser`, validación de monto, fecha y categoría (FR-007, FR-009, FR-010)
-- [ ] T029 [P] [US1] Crear `backend/Api/CategoriesEndpoints.cs` con `GET /api/categories` (del sistema más las propias del usuario) (FR-004)
-- [ ] T030 [P] [US1] Crear `frontend/src/components/EntryInput.tsx`: campo único de texto, validación de vacío y máximo 500, indicador de carga y botón deshabilitado mientras procesa (FR-001, FR-013)
-- [ ] T031 [US1] Crear `frontend/src/components/ConfirmModal.tsx` (modo creación, parte de gasto): título "¿Está todo bien?", monto, categoría y fecha precompletados **y editables**, botones "Confirmar" y "Cancelar" (FR-006, FR-008, AC-05)
-- [ ] T032 [US1] Conectar el flujo en `frontend/src/App.tsx`: texto → propuesta → modal → guardado, con mensaje de error que conserva el texto escrito (FR-011) — depende de T030 y T031
-- [ ] T032b [US1] En `frontend/src/App.tsx`: ante un 401 conservar el texto escrito, mostrar "Tu sesión venció, iniciá sesión de nuevo" y dejar un punto de redirección al login (la pantalla la aporta la feature de auth) (FR-012)
+- [X] T022 [US1] Crear `backend/Extraction/ExtractionPrompt.cs`: prompt de sistema corto y estable, herramienta `registrar_propuesta` con esquema de `event` y `expense`, fecha `today` y día de la semana, solo las categorías del sistema y las reglas de fechas de Assumptions de spec.md (FR-002, FR-003, FR-004)
+- [X] T023 [US1] Crear `backend/Extraction/AnthropicExtractionService.cs`: llamada a la Messages API con el modelo de `Anthropic:Model`, timeout de 4 s, sin reintentos en el servidor, error 504 si falla (FR-011, RNF-01, RNF-05) — depende de T022
+- [X] T024 [P] [US1] Crear `backend/Extraction/ProposalMapper.cs` (parte de gasto): convierte la salida del modelo en `Proposal`, resuelve categoría por nombre, aplica fecha por defecto y avisos (FR-003b, FR-005) — depende de T011
+- [X] T025 [P] [US1] Crear el dataset `backend.Tests/Eval/phrases.json` con **al menos 50 frases** coloquiales (`text`, `today`, `expectedAmount`, `expectedCategory`, `expectedEvent`): las 6 frases semilla del apéndice de PRD.md más frases solo de evento donde no debe extraerse gasto (RNF-06, AC-16, Principio III)
+- [X] T026 [US1] Crear `backend.Tests/Eval/ExtractionAccuracyEval.cs` con el trait `ExtractionAccuracyEval`, que solo corre si `ANTHROPIC_EVAL_KEY` está definida y exige al menos 90 % de monto y categoría exactos (RNF-06, AC-16) — depende de T023 y T025
+- [X] T027 [US1] Crear `backend/Api/ProposalsEndpoints.cs` con `POST /api/proposals`: valida `text` (1 a 500 caracteres) y `today`, llama a `IExtractionService`, responde 422 si no hay evento ni gasto, y no accede a la base de datos (FR-001, FR-005, FR-011) — depende de T023 y T024
+- [X] T028 [US1] Crear el validador del gasto y `backend/Api/EntriesEndpoints.cs` con `POST /api/entries` (parte de gasto): `UserId` desde `CurrentUser`, validación de monto, fecha y categoría (FR-007, FR-009, FR-010)
+- [X] T029 [P] [US1] Crear `backend/Api/CategoriesEndpoints.cs` con `GET /api/categories` (del sistema más las propias del usuario) (FR-004)
+- [X] T030 [P] [US1] Crear `frontend/src/components/EntryInput.tsx`: campo único de texto, validación de vacío y máximo 500, indicador de carga y botón deshabilitado mientras procesa (FR-001, FR-013)
+- [X] T031 [US1] Crear `frontend/src/components/ConfirmModal.tsx` (modo creación, parte de gasto): título "¿Está todo bien?", monto, categoría y fecha precompletados **y editables**, botones "Confirmar" y "Cancelar" (FR-006, FR-008, AC-05)
+- [X] T032 [US1] Conectar el flujo en `frontend/src/App.tsx`: texto → propuesta → modal → guardado, con mensaje de error que conserva el texto escrito (FR-011) — depende de T030 y T031
+- [X] T032b [US1] En `frontend/src/App.tsx`: ante un 401 conservar el texto escrito, mostrar "Tu sesión venció, iniciá sesión de nuevo" y dejar un punto de redirección al login (la pantalla la aporta la feature de auth) (FR-012)
 
 **Checkpoint**: US1 funcional y probable por sí sola (MVP)
 

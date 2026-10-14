@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using SmartAgenda.Api.Auth;
 using SmartAgenda.Api.Data;
 using SmartAgenda.Api.Endpoints;
+using SmartAgenda.Api.Extraction;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddSingleton<IExtractionService, AnthropicExtractionService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -35,6 +37,10 @@ app.UseApiErrorHandling();
 app.UseCors(FrontendCorsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapProposals();
+app.MapEntries();
+app.MapCategories();
 
 app.Run();
 
