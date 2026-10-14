@@ -181,11 +181,11 @@
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T060 [P] Test de integración: cada endpoint de contracts/openapi.yaml devuelve 401 sin token o con token vencido y no procesa ni guarda nada, en `backend.Tests/Integration/AuthRequiredTests.cs` (FR-012)
-- [ ] T061 [P] Crear `backend.Tests/Eval/LatencyEval.cs` (solo con `ANTHROPIC_EVAL_KEY`): 100 solicitudes consecutivas a `POST /api/proposals` con p95 menor a 3 s (RNF-01, AC-12, SC-002)
-- [ ] T062 Revisión de seguridad: confirmar que ningún endpoint lee `userId` del cuerpo, que ninguna consulta evita los filtros por usuario y que la clave de Anthropic no está en el repositorio (RNF-03, Principio II)
-- [ ] T063 Ejecutar `dotnet test` y `npm test` y `ANTHROPIC_EVAL_KEY=<clave> dotnet test --filter ExtractionAccuracyEval`; actualizar el apéndice de `PRD.md` con la medición real (la cifra actual de 98,4 % no se pudo verificar en el repositorio) (RNF-06, AC-16)
-- [ ] T064 Ejecutar los 12 escenarios de `specs/001-texto-ia-confirmacion/quickstart.md`, incluyendo el modal visible en menos de 5 s (RNF-05, AC-15), y registrar los resultados
+- [X] T060 [P] Test de integración: cada endpoint de contracts/openapi.yaml devuelve 401 sin token o con token vencido y no procesa ni guarda nada, en `backend.Tests/Integration/AuthRequiredTests.cs` (FR-012)
+- [X] T061 [P] Crear `backend.Tests/Eval/LatencyEval.cs` (solo con `ANTHROPIC_EVAL_KEY`): 100 solicitudes consecutivas a `POST /api/proposals` con p95 menor a 3 s (RNF-01, AC-12, SC-002)
+- [X] T062 Revisión de seguridad: confirmar que ningún endpoint lee `userId` del cuerpo, que ninguna consulta evita los filtros por usuario y que la clave de Anthropic no está en el repositorio (RNF-03, Principio II)
+- [ ] T063 (parcial: `dotnet test`, `npm test` y lint pasan; falta correr la evaluación de la IA y la latencia con `ANTHROPIC_EVAL_KEY`) Ejecutar `dotnet test` y `npm test` y `ANTHROPIC_EVAL_KEY=<clave> dotnet test --filter ExtractionAccuracyEval`; actualizar el apéndice de `PRD.md` con la medición real (la cifra actual de 98,4 % no se pudo verificar en el repositorio) (RNF-06, AC-16)
+- [ ] T064 (pendiente: requiere la clave de Anthropic, SQL Server y un navegador a 360px) Ejecutar los 12 escenarios de `specs/001-texto-ia-confirmacion/quickstart.md`, incluyendo el modal visible en menos de 5 s (RNF-05, AC-15), y registrar los resultados
 
 ---
 
