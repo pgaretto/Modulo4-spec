@@ -119,16 +119,16 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T040 [P] [US4] Tests del modal: el evento es editable (título y fecha); Escape cancela sin llamar a `/api/entries`; monto vacío, negativo o no numérico, título vacío y fecha inválida bloquean "Confirmar", en `frontend/tests/ConfirmModal.edit.test.tsx` (FR-006, FR-008, FR-009)
-- [ ] T041 [P] [US4] Test de accesibilidad y diseño: foco atrapado en el modal, uso solo con teclado, sin scroll horizontal a 360px de ancho, en `frontend/tests/ConfirmModal.a11y.test.tsx` (FR-015, RNF-02, AC-13)
-- [ ] T042 [P] [US4] Test de contrato e integración de `POST /api/categories`: 201, 400 (`Name` string (1-40)), 409 por nombre repetido sin distinguir mayúsculas; Sofi no ve las categorías propias de Fede; un gasto con categoría de otro usuario devuelve 400, en `backend.Tests/Contract/CategoriesContractTests.cs` (FR-004b, RNF-03)
+- [X] T040 [P] [US4] Tests del modal: el evento es editable (título y fecha); Escape cancela sin llamar a `/api/entries`; monto vacío, negativo o no numérico, título vacío y fecha inválida bloquean "Confirmar", en `frontend/tests/ConfirmModal.edit.test.tsx` (FR-006, FR-008, FR-009)
+- [X] T041 [P] [US4] Test de accesibilidad y diseño: foco atrapado en el modal, uso solo con teclado, sin scroll horizontal a 360px de ancho, en `frontend/tests/ConfirmModal.a11y.test.tsx` (FR-015, RNF-02, AC-13)
+- [X] T042 [P] [US4] Test de contrato e integración de `POST /api/categories`: 201, 400 (`Name` string (1-40)), 409 por nombre repetido sin distinguir mayúsculas; Sofi no ve las categorías propias de Fede; un gasto con categoría de otro usuario devuelve 400, en `backend.Tests/Contract/CategoriesContractTests.cs` (FR-004b, RNF-03)
 
 ### Implementation for User Story 4
 
-- [ ] T043 [US4] En `frontend/src/components/ConfirmModal.tsx`: extender la edición al evento, validar todos los campos (monto mayor que 0, fecha válida, título 1-120), cerrar con Escape y atrapar el foco (FR-006, FR-009, FR-015)
-- [ ] T044 [US4] Agregar `POST /api/categories` en `backend/Api/CategoriesEndpoints.cs`: `Name` string (1-40), único por usuario sin distinguir mayúsculas, `UserId` desde `CurrentUser` (FR-004b)
-- [ ] T045 [US4] Agregar al modal el selector de categoría con alta de una categoría propia (FR-004b) — depende de T043 y T044
-- [ ] T046 [P] [US4] Crear `frontend/src/styles.css` mobile-first con ancho mínimo de 360px para el campo de texto y el modal (FR-015, RNF-02)
+- [X] T043 [US4] En `frontend/src/components/ConfirmModal.tsx`: extender la edición al evento, validar todos los campos (monto mayor que 0, fecha válida, título 1-120), cerrar con Escape y atrapar el foco (FR-006, FR-009, FR-015)
+- [X] T044 [US4] Agregar `POST /api/categories` en `backend/Api/CategoriesEndpoints.cs`: `Name` string (1-40), único por usuario sin distinguir mayúsculas, `UserId` desde `CurrentUser` (FR-004b)
+- [X] T045 [US4] Agregar al modal el selector de categoría con alta de una categoría propia (FR-004b) — depende de T043 y T044
+- [X] T046 [P] [US4] Crear `frontend/src/styles.css` mobile-first con ancho mínimo de 360px para el campo de texto y el modal (FR-015, RNF-02)
 
 **Checkpoint**: US1, US2 y US4 completas; el flujo principal cumple el Principio I
 

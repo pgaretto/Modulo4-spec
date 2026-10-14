@@ -136,6 +136,9 @@ export const confirmEntry = (entry: ConfirmRequest) => post<ConfirmResponse>('/a
 
 export const listCategories = () => request<Category[]>('/api/categories')
 
+/** Crea una categoría propia. Se guarda al crearla, aunque después se cancele el modal. */
+export const createCategory = (name: string) => post<Category>('/api/categories', { name })
+
 /** Mensaje para mostrarle al usuario según el tipo de error. */
 export function userMessage(error: unknown): string {
   if (!(error instanceof ApiError)) return 'Ocurrió un error inesperado. Probá de nuevo.'

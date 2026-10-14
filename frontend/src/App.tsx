@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
   ApiError,
   confirmEntry,
+  createCategory,
   createProposal,
   listCategories,
   userMessage,
@@ -55,6 +56,13 @@ function App({ onUnauthorized }: AppProps) {
     }
   }
 
+  // La categoría propia se guarda al crearla, aunque después se cancele el modal.
+  const handleCreateCategory = async (name: string) => {
+    const category = await createCategory(name)
+    setCategories((list) => [...list, category])
+    return category
+  }
+
   const handleConfirm = async (entry: ConfirmRequest) => {
     setSaving(true)
     setModalError(null)
@@ -81,6 +89,7 @@ function App({ onUnauthorized }: AppProps) {
           error={modalError}
           onConfirm={handleConfirm}
           onCancel={() => setProposal(null)}
+          onCreateCategory={handleCreateCategory}
         />
       )}
     </main>

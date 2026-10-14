@@ -9,6 +9,8 @@ interface ConfirmModalProps {
   /** Se llama solo al presionar "Confirmar" (Principio I). */
   onConfirm: (entry: ConfirmRequest) => void
   onCancel: () => void
+  /** Alta de una categoría propia (FR-004b); si falta, el modal no ofrece agregar. */
+  onCreateCategory?: (name: string) => Promise<Category>
 }
 
 /** Textos exactos de los avisos (FR-014). */
@@ -27,8 +29,18 @@ function Warnings({ codes }: { codes: ProposalWarning[] }) {
   ))
 }
 
+const isValidDate = (value: string) => value !== '' && !Number.isNaN(Date.parse(value))
+
 /** Modal "¿Está todo bien?": muestra lo que entendió la IA, editable, antes de guardar nada (RF-07). */
-function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, onCancel }: ConfirmModalProps) {
+function ConfirmModal({
+  proposal,
+  categories,
+  saving = false,
+  error,
+  onConfirm,
+  onCancel,
+  onCreateCategory,
+}: ConfirmModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [validation, setValidation] = useState<string | null>(null)
   const [event, setEvent] = useState(() =>
@@ -45,6 +57,11 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
         }
       : null,
   )
+  const [created, setCreated] = useState<Category[]>([])
+  const [addingCategory, setAddingCategory] = useState(false)
+  const [newCategory, setNewCategory] = useState('')
+
+  const options = [...categories, ...created.filter((c) => !categories.some((k) => k.id === c.id))]
 
   // Los avisos van junto al dato afectado; los de fecha, junto al evento (o al gasto si no hay evento).
   const eventWarnings: ProposalWarning[] = proposal.warnings.filter(
@@ -62,10 +79,14 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+
+    if (event && !event.title.trim()) return setValidation('Ingresá un título.')
+    if ((event && !isValidDate(event.date)) || (expense && !isValidDate(expense.date))) {
+      return setValidation('Ingresá una fecha válida.')
+    }
     const amount = Number(expense?.amount)
-    if (expense && (!Number.isFinite(amount) || amount <= 0)) {
-      setValidation('Ingresá un monto mayor a 0.')
-      return
+    if (expense && (expense.amount.trim() === '' || !Number.isFinite(amount) || amount <= 0)) {
+      return setValidation('Ingresá un monto mayor a 0.')
     }
 
     setValidation(null)
@@ -73,6 +94,22 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
       event: event && { title: event.title.trim(), date: event.date, time: event.time || null },
       expense: expense && { amount, categoryId: expense.categoryId, date: expense.date },
     })
+  }
+
+  const handleCreateCategory = async () => {
+    const name = newCategory.trim()
+    if (!name || !onCreateCategory || !expense) return
+
+    try {
+      const category = await onCreateCategory(name)
+      setCreated((list) => [...list, category])
+      setExpense({ ...expense, categoryId: category.id })
+      setNewCategory('')
+      setAddingCategory(false)
+      setValidation(null)
+    } catch {
+      setValidation('No se pudo crear la categoría. Revisá que el nombre no exista.')
+    }
   }
 
   return (
@@ -132,13 +169,41 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
                 value={expense.categoryId}
                 onChange={(e) => setExpense({ ...expense, categoryId: e.target.value })}
               >
-                {categories.map((category) => (
+                {options.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
               </select>
             </label>
+            {onCreateCategory &&
+              (addingCategory ? (
+                <div>
+                  <label>
+                    Nueva categoría
+                    <input
+                      type="text"
+                      value={newCategory}
+                      maxLength={40}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      onKeyDown={(e) => {
+                        // Enter guarda la categoría, no confirma el modal.
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          void handleCreateCategory()
+                        }
+                      }}
+                    />
+                  </label>
+                  <button type="button" onClick={() => void handleCreateCategory()}>
+                    Guardar categoría
+                  </button>
+                </div>
+              ) : (
+                <button type="button" onClick={() => setAddingCategory(true)}>
+                  Agregar categoría
+                </button>
+              ))}
             <label>
               Fecha
               <input

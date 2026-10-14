@@ -163,6 +163,7 @@ El usuario ve la lista de sus eventos y gastos del mes y puede corregir o borrar
 - La API acepta datos de su propio usuario autenticado: el modal es el único camino de la interfaz para guardar, pero el servidor no puede distinguir un cliente que llame directo. Esto no expone datos de otros usuarios (RNF-03).
 - El presupuesto mensual y el cuadro de saldo se definen en otra feature (RF-03, RF-09, RF-10); aquí el gasto confirmado solo debe quedar disponible para ese cálculo.
 - Todo se maneja en una única moneda local; la entrada por voz o audio queda fuera de alcance de la v1.
+- Una categoría propia se guarda en el momento de crearla desde el modal, aunque después el usuario cancele el modal; no es un evento ni un gasto, así que no cae bajo la confirmación obligatoria.
 - La lista inicial de categorías es Comida, Transporte, Salidas, Salud y Otros (esta última para lo que no encaja en las demás).
 - Los reintentos ante falta de conexión (RNF-04) se especifican aparte y, aun así, deben pasar por el modal de confirmación.
 - Las fechas relativas se resuelven respecto de la fecha actual del usuario: "mañana" es el día siguiente; "el martes que viene" (o cualquier día de la semana) es la próxima ocurrencia estrictamente posterior a hoy; "el finde" es el próximo sábado; "la semana que viene" es el lunes de la semana siguiente. En todos los casos ambiguos el modal avisa y la fecha es editable.
