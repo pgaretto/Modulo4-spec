@@ -142,14 +142,14 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T047 [P] [US3] Test de integración: propuesta solo con evento y confirmación sin crear gasto, en `backend.Tests/Integration/EventOnlyTests.cs` (FR-005, AC-04)
-- [ ] T048 [P] [US3] Test de integración: un texto sin evento ni gasto ("hola, ¿cómo andás?") devuelve 422 y no abre el modal; `POST /api/entries` con cuerpo sin evento ni gasto devuelve 400, en `backend.Tests/Integration/NothingRecognizedTests.cs` (FR-011)
-- [ ] T049 [P] [US3] Test del modal: con propuesta solo de evento no se muestra la sección de gasto, en `frontend/tests/ConfirmModal.eventOnly.test.tsx` (FR-005)
+- [X] T047 [P] [US3] Test de integración: propuesta solo con evento y confirmación sin crear gasto, en `backend.Tests/Integration/EventOnlyTests.cs` (FR-005, AC-04)
+- [X] T048 [P] [US3] Test de integración: un texto sin evento ni gasto ("hola, ¿cómo andás?") devuelve 422 y no abre el modal; `POST /api/entries` con cuerpo sin evento ni gasto devuelve 400, en `backend.Tests/Integration/NothingRecognizedTests.cs` (FR-011)
+- [X] T049 [P] [US3] Test del modal: con propuesta solo de evento no se muestra la sección de gasto, en `frontend/tests/ConfirmModal.eventOnly.test.tsx` (FR-005)
 
 ### Implementation for User Story 3
 
-- [ ] T050 [US3] Garantizar en `backend/Api/ProposalsEndpoints.cs` y `backend/Api/EntriesEndpoints.cs` el 422 sin ítems, el 400 en confirmación vacía y `expense` nulo cuando el texto no menciona gasto (FR-005, FR-011)
-- [ ] T051 [US3] Ajustar `frontend/src/components/ConfirmModal.tsx` y `frontend/src/App.tsx` para mostrar solo las secciones presentes y un aviso "no entendí" en el caso 422 (FR-005, FR-011)
+- [X] T050 [US3] Garantizar en `backend/Api/ProposalsEndpoints.cs` y `backend/Api/EntriesEndpoints.cs` el 422 sin ítems, el 400 en confirmación vacía y `expense` nulo cuando el texto no menciona gasto (FR-005, FR-011)
+- [X] T051 [US3] Ajustar `frontend/src/components/ConfirmModal.tsx` y `frontend/src/App.tsx` para mostrar solo las secciones presentes y un aviso "no entendí" en el caso 422 (FR-005, FR-011)
 
 **Checkpoint**: US3 completa
 
@@ -163,17 +163,17 @@
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T052 [P] [US5] Tests de contrato de `GET`, `PUT` y `DELETE` en `/api/events` y `/api/expenses` (200, 204, 400, 401, 404), en `backend.Tests/Contract/EventsExpensesContractTests.cs` (FR-007b, FR-007c, FR-007e)
-- [ ] T053 [P] [US5] Tests de integración de aislamiento: Fede no puede listar, editar ni borrar ítems de Sofi, y la respuesta es idéntica a la de un ítem inexistente, en `backend.Tests/Integration/SavedItemsIsolationTests.cs` (FR-007d, RNF-03, AC-10)
-- [ ] T054 [P] [US5] Tests del frontend: la lista muestra los ítems del mes; editar abre el modal en modo edición con los datos cargados y guarda solo al "Confirmar"; borrar pide confirmación y al rechazarla el ítem sigue guardado, en `frontend/tests/SavedItemsList.test.tsx` (FR-007b, FR-007c, FR-007e)
+- [X] T052 [P] [US5] Tests de contrato de `GET`, `PUT` y `DELETE` en `/api/events` y `/api/expenses` (200, 204, 400, 401, 404), en `backend.Tests/Contract/EventsExpensesContractTests.cs` (FR-007b, FR-007c, FR-007e)
+- [X] T053 [P] [US5] Tests de integración de aislamiento: Fede no puede listar, editar ni borrar ítems de Sofi, y la respuesta es idéntica a la de un ítem inexistente, en `backend.Tests/Integration/SavedItemsIsolationTests.cs` (FR-007d, RNF-03, AC-10)
+- [X] T054 [P] [US5] Tests del frontend: la lista muestra los ítems del mes; editar abre el modal en modo edición con los datos cargados y guarda solo al "Confirmar"; borrar pide confirmación y al rechazarla el ítem sigue guardado, en `frontend/tests/SavedItemsList.test.tsx` (FR-007b, FR-007c, FR-007e)
 
 ### Implementation for User Story 5
 
-- [ ] T055 [P] [US5] Crear `backend/Api/EventsEndpoints.cs` con `GET /api/events?from&to`, `PUT /api/events/{id}` y `DELETE /api/events/{id}` (borrado definitivo; 404 si no existe para el usuario) (FR-007b, FR-007c, FR-007d, FR-007e)
-- [ ] T056 [P] [US5] Crear `backend/Api/ExpensesEndpoints.cs` con `GET /api/expenses?from&to`, `PUT /api/expenses/{id}` y `DELETE /api/expenses/{id}` con las mismas reglas (FR-007b, FR-007c, FR-007d, FR-007e)
-- [ ] T057 [P] [US5] Crear `frontend/src/components/SavedItemsList.tsx`: lista de eventos y gastos del mes con acciones editar y borrar (FR-007e)
-- [ ] T058 [US5] Agregar a `frontend/src/components/ConfirmModal.tsx` el modo edición (datos cargados, `PUT` solo desde "Confirmar") y el diálogo de confirmación de borrado (FR-007b, FR-007c) — depende de T043
-- [ ] T059 [US5] Integrar la lista y el modo edición en `frontend/src/App.tsx` (FR-007b, FR-007e) — depende de T057 y T058
+- [X] T055 [P] [US5] Crear `backend/Api/EventsEndpoints.cs` con `GET /api/events?from&to`, `PUT /api/events/{id}` y `DELETE /api/events/{id}` (borrado definitivo; 404 si no existe para el usuario) (FR-007b, FR-007c, FR-007d, FR-007e)
+- [X] T056 [P] [US5] Crear `backend/Api/ExpensesEndpoints.cs` con `GET /api/expenses?from&to`, `PUT /api/expenses/{id}` y `DELETE /api/expenses/{id}` con las mismas reglas (FR-007b, FR-007c, FR-007d, FR-007e)
+- [X] T057 [P] [US5] Crear `frontend/src/components/SavedItemsList.tsx`: lista de eventos y gastos del mes con acciones editar y borrar (FR-007e)
+- [X] T058 [US5] Agregar a `frontend/src/components/ConfirmModal.tsx` el modo edición (datos cargados, `PUT` solo desde "Confirmar") y el diálogo de confirmación de borrado (FR-007b, FR-007c) — depende de T043
+- [X] T059 [US5] Integrar la lista y el modo edición en `frontend/src/App.tsx` (FR-007b, FR-007e) — depende de T057 y T058
 
 **Checkpoint**: todas las historias completas
 

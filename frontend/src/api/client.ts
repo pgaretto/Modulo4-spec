@@ -139,6 +139,29 @@ export const listCategories = () => request<Category[]>('/api/categories')
 /** Crea una categoría propia. Se guarda al crearla, aunque después se cancele el modal. */
 export const createCategory = (name: string) => post<Category>('/api/categories', { name })
 
+const put = <T>(path: string, body: unknown) =>
+  request<T>(path, { method: 'PUT', body: JSON.stringify(body) })
+
+const del = (path: string) => request<void>(path, { method: 'DELETE' })
+
+/** Eventos y gastos guardados del usuario en un rango de fechas (yyyy-MM-dd, ambos inclusive). */
+export const listEvents = (from: string, to: string) =>
+  request<SavedEvent[]>(`/api/events?from=${from}&to=${to}`)
+
+export const listExpenses = (from: string, to: string) =>
+  request<SavedExpense[]>(`/api/expenses?from=${from}&to=${to}`)
+
+/** La edición se hace en el modal de confirmación y solo se llama al presionar "Confirmar". */
+export const updateEvent = (id: string, event: EventInput) => put<SavedEvent>(`/api/events/${id}`, event)
+
+export const updateExpense = (id: string, expense: ExpenseInput) =>
+  put<SavedExpense>(`/api/expenses/${id}`, expense)
+
+/** Borrado definitivo (FR-007c): no se puede deshacer. */
+export const deleteEvent = (id: string) => del(`/api/events/${id}`)
+
+export const deleteExpense = (id: string) => del(`/api/expenses/${id}`)
+
 /** Mensaje para mostrarle al usuario según el tipo de error. */
 export function userMessage(error: unknown): string {
   if (!(error instanceof ApiError)) return 'Ocurrió un error inesperado. Probá de nuevo.'

@@ -41,6 +41,8 @@ app.UseAuthorization();
 app.MapProposals();
 app.MapEntries();
 app.MapCategories();
+app.MapEvents();
+app.MapExpenses();
 
 app.Run();
 

@@ -24,12 +24,18 @@ interface Route {
 
 /** Simula la API por ruta y método, y registra cada llamada para poder verificarla. */
 export function mockApi(routes: Record<string, Route>) {
+  const all: Record<string, Route> = {
+    'GET /api/categories': { body: CATEGORIES },
+    'GET /api/events': { body: [] },
+    'GET /api/expenses': { body: [] },
+    ...routes,
+  }
   const calls: { method: string; path: string; body: unknown }[] = []
   const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
     const path = new URL(url).pathname
     const method = init?.method ?? 'GET'
     calls.push({ method, path, body: init?.body ? JSON.parse(init.body as string) : undefined })
-    const route = routes[`${method} ${path}`] ?? { status: 404, body: { code: 'NOT_FOUND', message: 'x' } }
+    const route = all[`${method} ${path}`] ?? { status: 404, body: { code: 'NOT_FOUND', message: 'x' } }
     return new Response(route.body === undefined ? null : JSON.stringify(route.body), {
       status: route.status ?? 200,
       headers: { 'Content-Type': 'application/json' },
