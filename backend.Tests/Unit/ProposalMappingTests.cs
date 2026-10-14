@@ -82,4 +82,70 @@ public class ProposalMappingTests
 
         Assert.Equal([ProposalWarnings.AmbiguousDate], proposal.Warnings);
     }
+
+    // --- Eventos (US2: FR-002, FR-003b, FR-005) ---
+
+    private static Proposal MapWithEvents(ModelEvent[] events, params ModelExpense[] expenses) =>
+        ProposalMapper.Map(new ModelOutput(events, expenses, []), Today, Category.System);
+
+    [Fact]
+    public void Un_evento_con_hora_se_propone_tal_cual()
+    {
+        var proposal = MapWithEvents([new ModelEvent("Dentista", new DateOnly(2026, 10, 20), "16:00")]);
+
+        Assert.Equal(new EventInput("Dentista", new DateOnly(2026, 10, 20), "16:00"), proposal.Event);
+        Assert.Null(proposal.Expense);
+    }
+
+    [Fact]
+    public void Un_evento_sin_hora_queda_sin_hora_es_decir_todo_el_dia()
+    {
+        var proposal = MapWithEvents([new ModelEvent("Dentista", new DateOnly(2026, 10, 16), null)]);
+
+        Assert.Null(proposal.Event!.Time);
+    }
+
+    [Fact]
+    public void El_gasto_sin_fecha_propia_toma_la_fecha_del_evento_de_la_frase()
+    {
+        var proposal = MapWithEvents(
+            [new ModelEvent("Dentista", new DateOnly(2026, 10, 20), "16:00")],
+            new ModelExpense(25000, "Salud", null));
+
+        Assert.Equal(new DateOnly(2026, 10, 20), proposal.Expense!.Date);
+    }
+
+    [Fact]
+    public void El_gasto_con_fecha_propia_la_conserva_aunque_haya_evento()
+    {
+        var proposal = MapWithEvents(
+            [new ModelEvent("Dentista", new DateOnly(2026, 10, 20), null)],
+            new ModelExpense(25000, "Salud", new DateOnly(2026, 10, 14)));
+
+        Assert.Equal(new DateOnly(2026, 10, 14), proposal.Expense!.Date);
+    }
+
+    [Fact]
+    public void Con_varios_eventos_propone_el_primero_y_avisa()
+    {
+        var proposal = MapWithEvents([
+            new ModelEvent("Dentista", new DateOnly(2026, 10, 20), "16:00"),
+            new ModelEvent("Cine", new DateOnly(2026, 10, 21), "21:00"),
+        ]);
+
+        Assert.Equal("Dentista", proposal.Event!.Title);
+        Assert.Contains(ProposalWarnings.MultipleEvents, proposal.Warnings);
+    }
+
+    [Fact]
+    public void Una_frase_con_evento_y_gasto_devuelve_ambos_sin_avisos()
+    {
+        var proposal = MapWithEvents(
+            [new ModelEvent("Almuerzo con mamá", new DateOnly(2026, 10, 15), null)],
+            new ModelExpense(15000, "Comida", null));
+
+        Assert.NotNull(proposal.Event);
+        Assert.NotNull(proposal.Expense);
+        Assert.Empty(proposal.Warnings);
+    }
 }

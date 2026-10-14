@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import type { Category, ConfirmRequest, Proposal } from '../api/client'
+import type { Category, ConfirmRequest, Proposal, ProposalWarning } from '../api/client'
 
 interface ConfirmModalProps {
   proposal: Proposal
@@ -11,10 +11,31 @@ interface ConfirmModalProps {
   onCancel: () => void
 }
 
+/** Textos exactos de los avisos (FR-014). */
+const WARNING_TEXT: Record<ProposalWarning, string> = {
+  MULTIPLE_EVENTS: 'Había más de un evento; se propone el primero',
+  MULTIPLE_EXPENSES: 'Había más de un gasto; se propone el primero',
+  DEFAULT_CATEGORY: 'No pude deducir la categoría; elegí una',
+  AMBIGUOUS_DATE: 'Fecha estimada; revisala',
+}
+
+function Warnings({ codes }: { codes: ProposalWarning[] }) {
+  return codes.map((code) => (
+    <p key={code} role="note">
+      {WARNING_TEXT[code]}
+    </p>
+  ))
+}
+
 /** Modal "¿Está todo bien?": muestra lo que entendió la IA, editable, antes de guardar nada (RF-07). */
 function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, onCancel }: ConfirmModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [validation, setValidation] = useState<string | null>(null)
+  const [event, setEvent] = useState(() =>
+    proposal.event
+      ? { title: proposal.event.title, date: proposal.event.date, time: proposal.event.time ?? '' }
+      : null,
+  )
   const [expense, setExpense] = useState(() =>
     proposal.expense
       ? {
@@ -25,14 +46,22 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
       : null,
   )
 
+  // Los avisos van junto al dato afectado; los de fecha, junto al evento (o al gasto si no hay evento).
+  const eventWarnings: ProposalWarning[] = proposal.warnings.filter(
+    (w) => w === 'MULTIPLE_EVENTS' || (w === 'AMBIGUOUS_DATE' && proposal.event),
+  )
+  const expenseWarnings: ProposalWarning[] = proposal.warnings.filter(
+    (w) => w === 'MULTIPLE_EXPENSES' || w === 'DEFAULT_CATEGORY' || (w === 'AMBIGUOUS_DATE' && !proposal.event),
+  )
+
   useEffect(() => {
     const dialog = dialogRef.current
     dialog?.showModal()
     return () => dialog?.close()
   }, [])
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
     const amount = Number(expense?.amount)
     if (expense && (!Number.isFinite(amount) || amount <= 0)) {
       setValidation('Ingresá un monto mayor a 0.')
@@ -41,7 +70,7 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
 
     setValidation(null)
     onConfirm({
-      event: null,
+      event: event && { title: event.title.trim(), date: event.date, time: event.time || null },
       expense: expense && { amount, categoryId: expense.categoryId, date: expense.date },
     })
   }
@@ -58,6 +87,31 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
     >
       <form onSubmit={handleSubmit} noValidate>
         <h2 id="confirm-title">¿Está todo bien?</h2>
+
+        {event && (
+          <fieldset>
+            <legend>Evento</legend>
+            <label>
+              Título
+              <input
+                type="text"
+                value={event.title}
+                maxLength={120}
+                onChange={(e) => setEvent({ ...event, title: e.target.value })}
+              />
+            </label>
+            <label>
+              Fecha
+              <input type="date" value={event.date} onChange={(e) => setEvent({ ...event, date: e.target.value })} />
+            </label>
+            <label>
+              Hora (opcional)
+              <input type="time" value={event.time} onChange={(e) => setEvent({ ...event, time: e.target.value })} />
+            </label>
+            {!event.time && <p>Sin hora: todo el día</p>}
+            <Warnings codes={eventWarnings} />
+          </fieldset>
+        )}
 
         {expense && (
           <fieldset>
@@ -93,6 +147,7 @@ function ConfirmModal({ proposal, categories, saving = false, error, onConfirm, 
                 onChange={(e) => setExpense({ ...expense, date: e.target.value })}
               />
             </label>
+            <Warnings codes={expenseWarnings} />
           </fieldset>
         )}
 

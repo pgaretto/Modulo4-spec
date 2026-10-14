@@ -9,7 +9,7 @@ public static class EntriesEndpoints
 {
     /// <summary>
     /// POST /api/entries: guarda lo que el usuario confirmó en el modal. Es la única vía de alta de eventos y
-    /// gastos (Principio I). El dueño sale siempre del token, nunca del cuerpo (RNF-03).
+    /// gastos (Principio I). El dueño sale siempre del token, nunca del cuerpo (RNF-03). Todo o nada.
     /// </summary>
     public static void MapEntries(this IEndpointRouteBuilder app) =>
         app.MapPost("/api/entries", async (ConfirmRequest request, AppDbContext db, ICurrentUser user, CancellationToken ct) =>
@@ -24,32 +24,51 @@ public static class EntriesEndpoints
                 return ApiErrors.BadRequest("Hay que confirmar al menos un evento o un gasto.");
             }
 
+            var errors = new List<string>();
             if (request.Event is not null)
             {
-                return ApiErrors.BadRequest("Los eventos todavía no se pueden confirmar.");
+                errors.AddRange(EventValidator.Validate(request.Event));
             }
 
-            // El filtro de datos solo deja ver las categorías del sistema y las propias del usuario.
-            var categoryVisible = request.Expense is not null
-                && await db.Categories.AnyAsync(c => c.Id == request.Expense.CategoryId, ct);
+            if (request.Expense is not null)
+            {
+                // El filtro de datos solo deja ver las categorías del sistema y las propias del usuario.
+                var categoryVisible = await db.Categories.AnyAsync(c => c.Id == request.Expense.CategoryId, ct);
+                errors.AddRange(ExpenseValidator.Validate(request.Expense, _ => categoryVisible));
+            }
 
-            var errors = ExpenseValidator.Validate(request.Expense!, _ => categoryVisible);
             if (errors.Count > 0)
             {
                 return ApiErrors.BadRequest(string.Join(" ", errors));
             }
 
-            var expense = new Expense
+            Event? savedEvent = null;
+            if (request.Event is { } ev)
             {
-                UserId = userId,
-                Amount = request.Expense!.Amount,
-                CategoryId = request.Expense.CategoryId,
-                Date = request.Expense.Date,
-            };
-            db.Expenses.Add(expense);
-            await db.SaveChangesAsync(ct);
+                savedEvent = new Event
+                {
+                    UserId = userId,
+                    Title = ev.Title.Trim(),
+                    Date = ev.Date,
+                    Time = EventValidator.ParseTime(ev.Time),
+                };
+                db.Events.Add(savedEvent);
+            }
 
-            var dto = new ExpenseDto(expense.Id, expense.Amount, expense.CategoryId, expense.Date);
-            return Results.Json(new ConfirmResponse(null, dto), statusCode: StatusCodes.Status201Created);
+            Expense? savedExpense = null;
+            if (request.Expense is { } ex)
+            {
+                savedExpense = new Expense { UserId = userId, Amount = ex.Amount, CategoryId = ex.CategoryId, Date = ex.Date };
+                db.Expenses.Add(savedExpense);
+            }
+
+            await db.SaveChangesAsync(ct); // una sola transacción: se guardan ambos o ninguno
+
+            var response = new ConfirmResponse(
+                savedEvent is null ? null : ToDto(savedEvent),
+                savedExpense is null ? null : new ExpenseDto(savedExpense.Id, savedExpense.Amount, savedExpense.CategoryId, savedExpense.Date));
+            return Results.Json(response, statusCode: StatusCodes.Status201Created);
         });
+
+    public static EventDto ToDto(Event e) => new(e.Id, e.Title, e.Date, e.Time?.ToString("HH:mm"));
 }
