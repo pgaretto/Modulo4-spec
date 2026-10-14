@@ -158,7 +158,7 @@ Por otro lado, la gente sí usa el calendario del celular para organizarse. El p
 
 ## Apéndice: Dataset de Evaluación de IA (Benchmark para el 90% de Acierto)
 
-> **Dataset completo:** RNF-06 exige al menos 50 frases. El dataset vigente tiene 60 y vive en `backend.Tests/Eval/phrases.json` (incluye las 6 frases semilla de abajo, más 6 frases solo de evento o sin gasto donde no debe extraerse gasto). Se corre con `ANTHROPIC_EVAL_KEY` definida: `dotnet test --filter ExtractionAccuracyEval`. Última medición: pendiente de ejecutar con una clave real (el 98,4% anterior correspondía a otro dataset y no se pudo verificar en este repositorio).
+> **Dataset completo:** RNF-06 exige al menos 50 frases. El dataset vigente tiene 60 y vive en `backend.Tests/Eval/phrases.json` (incluye las 6 frases semilla de abajo, más 6 frases solo de evento o sin gasto donde no debe extraerse gasto). Se corre con `ANTHROPIC_EVAL_KEY` definida: `dotnet test --filter ExtractionAccuracyEval`. Última medición (2026-10-14, Claude Haiku, 60 frases): el test exige al menos 90% y **pasó**, igual que la latencia (p95 < 3 s en 100 solicitudes consecutivas, RNF-01). El valor exacto del acierto no se registró en esa corrida; las evaluaciones ahora lo imprimen (`dotnet test backend.Tests --filter "ExtractionAccuracyEval|LatencyEval" --logger "console;verbosity=detailed"`).
 
 Para verificar objetivamente la métrica del 90% de acierto (criterio de acierto: **monto y categoría del gasto exactos**, según RNF-06), se utiliza un conjunto de frases de prueba en lenguaje coloquial para validar la extracción de datos. Muestra semilla inicial:
 

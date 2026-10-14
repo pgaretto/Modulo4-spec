@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Xunit.Abstractions;
 using SmartAgenda.Api.Domain;
 using SmartAgenda.Api.Extraction;
 
@@ -27,7 +28,7 @@ public record EvalPhrase(string Text, DateOnly Today, decimal? ExpectedAmount, s
 /// categoría del gasto idénticos a los esperados. Correr con
 /// <c>ANTHROPIC_EVAL_KEY=... dotnet test --filter ExtractionAccuracyEval</c>.
 /// </summary>
-public class ExtractionAccuracyEval
+public class ExtractionAccuracyEval(ITestOutputHelper output)
 {
     private const double MinAccuracy = 0.90;
     private const int MinPhrases = 50;
@@ -83,6 +84,9 @@ public class ExtractionAccuracyEval
         });
 
         var accuracy = 1.0 - (double)failures.Count / phrases.Count;
+        // Queda en el informe del test (dotnet test --logger "console;verbosity=detailed") para registrar la medición.
+        output.WriteLine($"Acierto: {accuracy:P1} ({phrases.Count - failures.Count}/{phrases.Count}); mínimo {MinAccuracy:P0}.");
+        foreach (var failure in failures.Order()) output.WriteLine($"  falla: {failure}");
         Assert.True(accuracy >= MinAccuracy,
             $"Acierto {accuracy:P1} ({phrases.Count - failures.Count}/{phrases.Count}); mínimo {MinAccuracy:P0}.\n" +
             string.Join("\n", failures.Order()));

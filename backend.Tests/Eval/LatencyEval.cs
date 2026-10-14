@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using SmartAgenda.Api.Extraction;
+using Xunit.Abstractions;
 
 namespace SmartAgenda.Tests.Eval;
 
@@ -11,7 +12,7 @@ namespace SmartAgenda.Tests.Eval;
 /// solo suma validaciones locales. Una solicitud que falla cuenta como más lenta que el límite. Correr con
 /// <c>ANTHROPIC_EVAL_KEY=... dotnet test --filter LatencyEval</c>.
 /// </summary>
-public class LatencyEval
+public class LatencyEval(ITestOutputHelper output)
 {
     private const int Requests = 100;
     private static readonly TimeSpan Limit = TimeSpan.FromSeconds(3);
@@ -48,6 +49,7 @@ public class LatencyEval
 
         var ordered = times.Order().ToList();
         var p95 = ordered[(int)Math.Ceiling(Requests * 0.95) - 1];
+        output.WriteLine($"Latencia en {Requests} solicitudes: mediana {ordered[Requests / 2].TotalSeconds:F2} s, p95 {p95.TotalSeconds:F2} s, máxima {ordered[^1].TotalSeconds:F2} s (límite {Limit.TotalSeconds} s).");
         Assert.True(p95 < Limit, $"p95 = {p95.TotalSeconds:F2} s (límite {Limit.TotalSeconds} s); mediana = {ordered[Requests / 2].TotalSeconds:F2} s.");
     }
 }
