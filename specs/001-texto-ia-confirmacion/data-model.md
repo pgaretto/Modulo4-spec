@@ -1,5 +1,7 @@
 # Data Model: Entrada por texto con IA y confirmación
 
+Nota de implementación: `UserId` es un `string` (el claim `sub` del token) y no un `guid`, porque la identidad la define la feature de login y los tokens de `dotnet user-jwts` usan el nombre como `sub`.
+
 Todas las entidades persistidas llevan `UserId` y se filtran por el usuario autenticado (RNF-03). La **Propuesta** y la **Frase** no se persisten.
 
 ## Category
